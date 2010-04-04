@@ -1,0 +1,90 @@
+// --- IMPLEMENT SUPPORT TO ----//
+
+// ELEMENTS (http://www.w3.org/TR/SVG11/shapes.html)
+
+[element]		[attribute definitions]
+circle			cx cy r
+ellipse			cx cy rx ry
+line			x1 y1 x2 y2
+path			d
+polygon			points
+polyline		points
+rect			x y width height rx ry
+
+// PATH COMMANDS (http://www.w3.org/TR/SVG11/paths.html#PathElement)
+
+Regex for all commands: /(?:[a-zA-Z] ?(?:[0-9.-],? ?)+)|(?:z|Z)/g
+
+[command]	[description]			[param]													[regex]
+A			elliptical arc			rx,ry x-rotation large-arc,sweep-flag x,y
+a			
+C			cubic bezier			c1x,c1y c2x,c2y x,y										/(c|C) ?(-?[0-9.]+) ?,?(-?[0-9.]+) ?,?(-?[0-9.]+) ?,?(-?[0-9.]+) ?,?(-?[0-9.]+) ?,?(-?[0-9.]+)/g
+c
+H			h lineto				x														/(h|H) ?(-?[0-9.]+)/g
+h			
+L			lineto					x,y														/(l|L) ?(-?[0-9.]+) ?,?(-?[0-9.]+)/g
+l			
+M			moveto					x,y														/(m|M) ?(-?[0-9.]+) ?,?(-?[0-9.]+)/g
+m			
+Q			quad bezier				c1x,c1y x,y												/(q|Q) ?(-?[0-9.]+) ?,?(-?[0-9.]+) ?,?(-?[0-9.]+) ?,?(-?[0-9.]+)/g
+q
+S			smooth cubic			c2x,c2y x,y												/(s|S) ?(-?[0-9.]+) ?,?(-?[0-9.]+) ?,?(-?[0-9.]+) ?,?(-?[0-9.]+)/g
+s
+T			smooth quad				x,y														/(t|T) ?(-?[0-9.]+) ?,?(-?[0-9.]+)/g
+t
+V			v lineto				y														/(v|V) ?(-?[0-9.]+)/g
+v
+Z			closepath				none													/(z|Z)/g
+z
+
+// ATTRIBUTES (http://www.w3.org/TR/SVG11/attindex.html - http://www.w3.org/TR/SVG11/painting.html)
+
+[name]					[description]				[value]															[all elements]
+class [?]				css class name				String															yes
+cx						center X					Number
+cy						center Y					Number
+d						draw						String (M100,20 h20,40 80,20...z)
+fill					fill color					Hex-color (#000000)												yes
+fill-opacity										Number (0.8)													yes
+height												Number
+opacity												Number (0.5)													yes
+points												Coordinates (x1,y1 x2,y2 x3,y3...)
+r						radius						Number
+rx						radius x					Number
+ry						radius y					Number
+stroke					stroke color				Hex-color (#000000)												yes
+stroke-linecap			caps						String ('butt', 'round', 'square')								yes
+stroke-linejoin			joints						String ('miter', 'round', 'bevel)								yes
+stroke-miterlimit		miterlimit					Number															yes
+stroke-opacity										Number (0.5)													yes
+stroke-width										Number															yes
+style [?]				css							String (fill:#cccccc; stroke:#000000; stroke-width:1)			yes
+transform [?]			transformations				String (matrix(a,b,c,d,e,f) 									yes
+															translate(-10, -20)
+															scale(2) 
+															rotate(45 [cx cy])
+															skewX(15) 
+															skewY(15))	
+width												Number
+x													Number
+x1						point1 x					Number
+x2						point2 x					Number
+y													Number
+y1						point1 y					Number
+y2						point2 y					Number
+
+
+//-------- FIVE3D MOTIFS --------//
+
+[string]		[description]			[calls]
+"B"				beginFill				__motif.push(['B', [color, alpha]]);
+"C"				curveTo					__motif.push(['C', [controlx, controly, anchorx, anchory]]);
+"E"				endFill					__motif.push(['E']);
+"L"				lineTo					__motif.push(['L', [x, y]]);
+"M"				moveTo					__motif.push(['M', [x, y]]);
+"S"				lineStyle				__motif.push(['S', [thickness, color, alpha, pixelhinting, scalemode, caps, joints, miterlimit]]);
+
+// Example of addMotif()
+var motifs:Array = [ ['M', [x, y]], ['L', [x + wid, y]], ['L', [x + wid, y + hei]], ['L', [x, y + hei]], ['L', [x, y]] ];
+addMotif( [['B', [0x000000, 1]]].concat( motifs ).concat( [['E']] ) );
+
