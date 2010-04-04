@@ -1,6 +1,8 @@
 # SVG to FIVe3D Parser #
 
-AS3 SVG Parser to FIVe3D
+AS3 SVG Parser to FIVe3D.
+
+To learn more visit: [http://blog.millermedeiros.com/2010/04/converting-svg-to-five3d-flash-vector-graphics-and-html5-canvas/](http://blog.millermedeiros.com/2010/04/converting-svg-to-five3d-flash-vector-graphics-and-html5-canvas/).
 
 ## Important ##
 
