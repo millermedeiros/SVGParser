@@ -1,4 +1,5 @@
 ﻿/**
+ * SVG to motifs parser <http://github.com/millermedeiros/SVGParser>
  * Copyright (c) 2009 Miller Medeiros <http://www.millermedeiros.com/>
  * This software is released under the MIT License <http://www.opensource.org/licenses/mit-license.php>
  */
@@ -6,6 +7,7 @@
  //TODO: remove unnecessary lineStyle commands to reduce Motifs size
  //TODO: fix spiral fill bug (don't think it's a big problem since spirals aren't commom)
  //TODO: support CSS classes (maybe)
+ //FIXME: remove metadata from Inkscape SVG files (some files throw error 1009)
  
 package com.millermedeiros.parsers {
 	
@@ -31,8 +33,7 @@ package com.millermedeiros.parsers {
 	/**
 	 * Parses a SVG file into a motifs array
 	 * @author Miller Medeiros (www.millermedeiros.com)
-	 * @since 2009/07/22
-	 * @version	0.1
+	 * @version	0.1 (2009/07/22)
 	 */
 	public final class SVGToMotifs {
 		
