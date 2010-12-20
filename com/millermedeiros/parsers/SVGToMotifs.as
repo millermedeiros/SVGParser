@@ -286,13 +286,15 @@ package com.millermedeiros.parsers {
 		 */
 		static private function parseTransform(str:String):Matrix{
 			var mat:Matrix = new Matrix();
-			var transforms:Array = str.match(/[a-zA-Z]+\([\d-., ]+\)/g); //split all commands and params
+			var transforms:Array = str.match(/[a-zA-Z]+\([\d-.eE, ]+\)/g); //split all commands and params
+			var parts:Array;
 			var command:String;
-			var params:Array = [];
+			var params:Array;
 			var n:int = transforms.length;
 			while (n--) {
-				command = String(transforms[n]).match(/[a-zA-Z]+/g)[0];
-				params = String(transforms[n]).match(/[-\d.]+/g);
+				parts = String(transforms[n]).split("(");
+				command = String(parts[0]);
+				params = String(parts[1]).match(/[-\d.eE]+/g);
 				switch(command) {
 					case "matrix":
 						mat.concat(new Matrix(params[0], params[1], params[2], params[3], params[4], params[5]));
