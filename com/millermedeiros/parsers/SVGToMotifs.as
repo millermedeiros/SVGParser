@@ -372,6 +372,7 @@ package com.millermedeiros.parsers {
 		 * @param	d	Path data commands
 		 */
 		private static function ePath(d:String):void {
+			if (!d) return;
 			
 			_initAnchor.x = _initAnchor.y = _prevAnchor.x = _prevAnchor.y = _prevControl.x = _prevControl.y = _prevControl.x = _prevControl.y = 0;
 			
