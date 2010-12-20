@@ -106,9 +106,8 @@ package com.millermedeiros.parsers {
 			_curMatrix = new Matrix();
 			
 			// parse SVG tags
-			svg = svg.replace(/[a-zA-Z]*:[a-zA-Z]+="(?:[\w]*[\/:\.#;,\s+=]*)*"/g, ""); //remove namespaces and base64 image data (to avoid bugs)
-			var elements:XML = new XML("<svg>" + svg.replace(/<\??xml[^>]*>|<![^>]*>|<\/?svg[^>]*>|\t|\r|\n/g, "") +"</svg>"); //remove tags <xml> <svg> and their attributes. also removes tabs and line breaks (to avoid bugs)
-			parseTags(elements.children());
+			var xmlObject:XML = new XML(svg);
+			parseTags(xmlObject.children());
 			
 			// WARNINGS / ERRORS
 			_warnings += (_eWarnings.length)? "WARNING: Elements [" + _eWarnings.join(", ") + "] are not supported and will be ignored.\n" : "";
@@ -136,6 +135,7 @@ package com.millermedeiros.parsers {
 			var m:int = elm.length();
 			for (var i:int = 0; i < m; i++) {
 				tagName = elm[i].name();
+				tagName = tagName.split("::")[1]; //split off the namespace
 				elmAtt = mergeAttributes(parentAtt, parseAttributes(elm[i].attributes()));//inheritance
 				if(tagName != "g"){
 					parseElements(tagName, elmAtt);
@@ -395,6 +395,12 @@ package com.millermedeiros.parsers {
 			_prevCommand = null;
 			
 			for (var j:int = 0; j < n; j++) {
+			
+				if (_prevCommand && _prevCommand.toLowerCase() == "z") {			
+					_initAnchor.x = commands[j][1][0];
+					_initAnchor.y = commands[j][1][1];
+					if(_hasTransform) _initAnchor = _curMatrix.transformPoint(_initAnchor);
+				}
 				
 				switch (commands[j][0]) {
 					case "A":
