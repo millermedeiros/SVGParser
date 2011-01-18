@@ -3,7 +3,7 @@
 	/**
 	 * StringUtils - Useful functions for string formating
 	 * @author Miller Medeiros (http://www.millermedeiros.com)
-	 * @version	0.5.2 (2010/02/09)
+	 * @version	0.6 (2011/01/18)
 	 */
 	public class StringUtils {
 		
@@ -44,6 +44,7 @@
 		 * @return	Formated String
 		 */
 		public static function toTitleFormat(path:String, defaultTitle:String = "", separator:String = " | "):String {
+			path = path || "";
 			
 			// Remove empty items of the pathsArr
 			function isNotEmpty(item:*, index:int, array:Array):Boolean {
@@ -67,6 +68,7 @@
 		 * - ex: StringUtils.toProperCase("lorem ipsum dolor") returns "Lorem Ipsum Dolor"
 		 */
 		public static function toProperCase(str:String):String {
+			str = str || "";
 			function capsFn():String {
 				return arguments[0].toUpperCase();
 			}
@@ -78,6 +80,7 @@
 		 * - ex: StringUtils.toCamelCase("lorem ipsum-dolor") returns "loremIpsumDolor"
 		 */
 		public static function toCamelCase(str:String):String {
+			str = str || "";
 			str = str.replace("-", " ");
 			str = toProperCase(str).replace(" ", "");
 			// lowercase first letter
@@ -92,9 +95,10 @@
 		 * - ex:  StringUtils.replaceAccents("Téçãö ý À æ ?#special-example"); returns "Tecao y A ae ?#special-example"
 		 */
 		public static function replaceAccents(str:String):String {
+			str = str || "";
 			
 			// verifies if the String has accents and replace accents
-			if (str.search(/[\xc0-\xff]/g) > -1) {
+			if (str.search(/[\xC0-\xFF]/g) > -1) {
 				str = str.replace(/[\xC0-\xC5]/g, "A");
 				str = str.replace(/[\xC6]/g, "AE");
 				str = str.replace(/[\xC7]/g, "C");
@@ -105,6 +109,7 @@
 				str = str.replace(/[\xD2-\xD6\xD8]/g, "O");
 				str = str.replace(/[\xD9-\xDC]/g, "U");
 				str = str.replace(/[\xDD]/g, "Y");
+				str = str.replace(/[\xDE]/g, "P");
 				str = str.replace(/[\xE0-\xE5]/g, "a");
 				str = str.replace(/[\xE6]/g, "ae");
 				str = str.replace(/[\xE7]/g, "c");
@@ -113,6 +118,7 @@
 				str = str.replace(/[\xF1]/g, "n");
 				str = str.replace(/[\xF2-\xF6\xF8]/g, "o");
 				str = str.replace(/[\xF9-\xFC]/g, "u");
+				str = str.replace(/[\xFE]/g, "p");
 				str = str.replace(/[\xFD\xFF]/g, "y");
 			}
 			return str;
@@ -124,6 +130,7 @@
 		 * - ex: StringUtils.removeNonWordChars("Téçãö ý À æ ?#special-example")  returns  "Téçãö ý À æ special-example"
 		 */
 		public static function removeNonWordChars(str:String, replace:String = ""):String {
+			str = str || "";
 			return str.replace(/[^\w \-\xC0-\xFF]/g, replace);
 		}
 		
@@ -132,6 +139,7 @@
 		 * - ex: StringUtils.removeSpecialChars("Téçãö ý À æ ?#special-example")  returns  "T    special-example"
 		 */
 		public static function removeSpecialChars(str:String, replace:String = ""):String {
+			str = str || "";
 			return str.replace(/[^\w \_\-]/g, replace);
 		}
 		
@@ -139,7 +147,8 @@
 		 * Convert all multiple spaces into single spaces
 		 * - ex: StringUtils.removeMultipleSpaces("lorem     ipsum  dolor")  returns  "lorem ipsum dolor"
 		 */
-		public static function removeMultipleSpaces(str:String, replace:String = ""):String {
+		public static function removeMultipleSpaces(str:String, replace:String = " "):String {
+			str = str || "";
 			return str.replace(/ {2,}/g, replace);
 		}
 		
@@ -147,6 +156,7 @@
 		 * Remove all line breaks
 		 */
 		public static function removeLineBreaks(str:String, replace:String = ""):String {
+			str = str || "";
 			return str.replace(/\r|\n/g, replace);
 		}
 		
@@ -154,14 +164,16 @@
 		 * Remove all tabs
 		 */
 		public static function removeTabs(str:String, replace:String = ""):String {
-			return str.replace(/\t/g, replace);
+			str = str || "";
+			return str.replace(/\t+/g, replace);
 		}
 		
 		/**
 		 * Remove all tabs, line breaks and spaces
 		 */
 		public static function removeAllWhiteSpaces(str:String, replace:String = ""):String {
-			return str.replace(/\s/g, replace);
+			str = str || "";
+			return str.replace(/\s+/g, replace);
 		}
 		
 		/**
@@ -169,6 +181,7 @@
 		 * - ex: StringUtils.removeSpaces("lorem     ipsum  dolor")  returns  "loremipsumdolor"
 		 */
 		public static function removeSpaces(str:String, replace:String = ""):String {
+			str = str || "";
 			return str.replace(/ +/g, replace);
 		}
 		
@@ -177,8 +190,8 @@
 		 * - ex: ex: StringUtils.trim("  lorem ipsum dolor  ")  returns  "lorem ipsum dolor"
 		 */
 		public static function trim(str:String):String {
-			if (str == null) { return ''; }
-			return str.replace(/^\s+|\s+$/g, '');
+			str = str || "";
+			return str.replace(/^\s+|\s+$/g, "");
 		}
 		
 		/**
@@ -186,8 +199,8 @@
 		 * - ex: ex: StringUtils.ltrim("  lorem ipsum dolor  ")  returns  "lorem ipsum dolor  "
 		 */
 		public static function ltrim(str:String):String {
-			if (str == null) { return ''; }
-			return str.replace(/^\s+/, '');
+			str = str || "";
+			return str.replace(/^\s+/, "");
 		}
 		
 		/**
@@ -195,14 +208,15 @@
 		 * - ex: ex: StringUtils.rtrim("  lorem ipsum dolor  ")  returns  "  lorem ipsum dolor"
 		 */
 		public static function rtrim(str:String):String {
-			if (str == null) { return ''; }
-			return str.replace(/\s+$/, '');
+			str = str || "";
+			return str.replace(/\s+$/, "");
 		}
 		
 		/**
 		 * Remove everything inside multi line or single line comments 
 		 */
 		public static function removeAllComments(str:String, replace:String = ""):String {
+			str = str || "";
 			return removeMultiLineComments(removeSingleLineComments(str, replace), replace);
 		}
 		
@@ -210,6 +224,7 @@
 		 * Remove everything inside multi line comments
 		 */
 		public static function removeMultiLineComments(str:String, replace:String = ""):String {
+			str = str || "";
 			return str.replace(/\/\*.+?(?:\*\/)/gs, replace);
 		}
 		
@@ -217,6 +232,7 @@
 		 * Remove everything inside single line comments
 		 */
 		public static function removeSingleLineComments(str:String, replace:String = ""):String {
+			str = str || "";
 			return str.replace(/\/\/[^\n\r]+/gs, replace);
 		}
 	}

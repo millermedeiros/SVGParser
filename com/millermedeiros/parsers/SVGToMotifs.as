@@ -33,7 +33,7 @@ package com.millermedeiros.parsers {
 	/**
 	 * Parses a SVG file into a motifs array
 	 * @author Miller Medeiros (www.millermedeiros.com)
-	 * @version	0.1 (2009/07/22)
+	 * @version	0.2 (2011/01/17)
 	 */
 	public final class SVGToMotifs {
 		
@@ -135,7 +135,7 @@ package com.millermedeiros.parsers {
 			var m:int = elm.length();
 			for (var i:int = 0; i < m; i++) {
 				tagName = elm[i].name();
-				tagName = tagName.split("::")[1]; //split off the namespace
+				tagName = tagName.replace(/.*::/, ''); //remove namespace and capture only tag name
 				elmAtt = mergeAttributes(parentAtt, parseAttributes(elm[i].attributes()));//inheritance
 				if(tagName != "g"){
 					parseElements(tagName, elmAtt);
@@ -286,7 +286,7 @@ package com.millermedeiros.parsers {
 		 */
 		static private function parseTransform(str:String):Matrix{
 			var mat:Matrix = new Matrix();
-			var transforms:Array = str.match(/[a-zA-Z]+\([\d-.eE, ]+\)/g); //split all commands and params
+			var transforms:Array = str.match(/[a-zA-Z]+\([\d\-\., ]+\)/g); //split all commands and params
 			var parts:Array;
 			var command:String;
 			var params:Array;
@@ -294,7 +294,7 @@ package com.millermedeiros.parsers {
 			while (n--) {
 				parts = String(transforms[n]).split("(");
 				command = String(parts[0]);
-				params = String(parts[1]).match(/[-\d.eE]+/g);
+				params = String(parts[1]).match(/[\d\-\.]+/g);
 				switch(command) {
 					case "matrix":
 						mat.concat(new Matrix(params[0], params[1], params[2], params[3], params[4], params[5]));
@@ -388,7 +388,7 @@ package com.millermedeiros.parsers {
 				commands[i] = (temp.length > 1)? [temp.substr(0, 1), temp.substr(1).split(",")] : [temp.substr(0, 1)]; //[command, [params...]]
 			}
 			
-			//TODO: TEST close path
+			//TODO: check first command that isn't "m" since path may have multiple moveTo commands at the beginning
 			if (String(commands[0][0]).toLowerCase() == "m") {
 				_initAnchor.x = commands[0][1][0];
 				_initAnchor.y = commands[0][1][1];
@@ -398,7 +398,8 @@ package com.millermedeiros.parsers {
 			_prevCommand = null;
 			
 			for (var j:int = 0; j < n; j++) {
-			
+				
+				//TODO: still don't know if this block is required... need a test case where it is required. ask @wessite about it (since he added it)
 				if (_prevCommand && _prevCommand.toLowerCase() == "z") {			
 					_initAnchor.x = commands[j][1][0];
 					_initAnchor.y = commands[j][1][1];
