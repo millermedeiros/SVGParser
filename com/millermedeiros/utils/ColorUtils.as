@@ -3,7 +3,7 @@
 	/**
 	 * ColorUtils
 	 * @author Miller Medeiros (http://www.millermedeiros.com)
-	 * @version	0.4 (2009/10/28)
+	 * @version	0.4.1 (2011/01/18)
 	 */
 	public final class ColorUtils {
 		
@@ -75,6 +75,7 @@
 		 * @example	ColorUtils.hexToUint("#FF0000") return 0xFF0000
 		 */
 		public static function hexToUint(hex:String):uint {
+			hex = hex || "";
 			hex = hex.replace("#", "").toUpperCase();
 			if (hex.length == 3) hex = hex.replace(/(\w)/g, "$&$&"); //converts FC0 to FFCC00
 			return uint("0x" + hex);
