@@ -177,7 +177,8 @@
 		 * - ex: ex: StringUtils.trim("  lorem ipsum dolor  ")  returns  "lorem ipsum dolor"
 		 */
 		public static function trim(str:String):String {
-			return ltrim(rtrim(str));
+			if (str == null) { return ''; }
+			return str.replace(/^\s+|\s+$/g, '');
 		}
 		
 		/**
@@ -185,7 +186,8 @@
 		 * - ex: ex: StringUtils.ltrim("  lorem ipsum dolor  ")  returns  "lorem ipsum dolor  "
 		 */
 		public static function ltrim(str:String):String {
-			return str.replace(/^\s*/, "");
+			if (str == null) { return ''; }
+			return str.replace(/^\s+/, '');
 		}
 		
 		/**
@@ -193,7 +195,8 @@
 		 * - ex: ex: StringUtils.rtrim("  lorem ipsum dolor  ")  returns  "  lorem ipsum dolor"
 		 */
 		public static function rtrim(str:String):String {
-			return str.replace(/\s*$/, "");
+			if (str == null) { return ''; }
+			return str.replace(/\s+$/, '');
 		}
 		
 		/**
