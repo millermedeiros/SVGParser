@@ -5,9 +5,12 @@
  */
 
  //TODO: remove unnecessary lineStyle commands to reduce Motifs size
- //TODO: fix spiral fill bug (don't think it's a big problem since spirals aren't commom)
+ //FIXME: fix spiral fill bug (don't think it's a big problem since spirals aren't commom)
  //TODO: support CSS classes (maybe)
- //FIXME: remove metadata from Inkscape SVG files (some files throw error 1009)
+ //TODO: TEST close path.
+ //TODO: improve performance.
+ //TODO: maybe make processing asynchronous or limit number of operations per enterframe to avoid blocking the system.
+ //TODO: split parser into different classes (one for commands and one for paths) so code is a little bit cleaner (don't know why I haven't done like this since the beginning).
  
 package com.millermedeiros.parsers {
 	
@@ -485,7 +488,7 @@ package com.millermedeiros.parsers {
 		 */
 		private static function ePolygon(pts:String, isClosed:Boolean = true):void {
 			
-			var pArr:Array = StringUtils.removeMultipleSpaces(StringUtils.trim(pts)).split(" ");
+			var pArr:Array = StringUtils.trim(pts).split(/\s+/); //used /\s+/ instead of " " because tabs and multiple spaces are alowed inside commands
 			var n:int = pArr.length;
 			
 			while (n--) {

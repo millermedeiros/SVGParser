@@ -7,6 +7,7 @@ package com.millermedeiros.geom {
 	
 	import com.millermedeiros.geom.Polyline;
 	import flash.geom.Matrix;
+	import flash.geom.Point;
 	
 	/**
 	 * Object that represents a set of connected (and closed) straight line segments
@@ -27,7 +28,7 @@ package com.millermedeiros.geom {
 		 */
 		override public function set points(value:Array):void {
 			_points = value;
-			_points.push(_points[0]); //add close path point
+			_points.push(Point(_points[0]).clone()); //add close path point
 		}
 		
 		/**
@@ -41,6 +42,7 @@ package com.millermedeiros.geom {
 			while (n--) {
 				pts[n] = matrix.transformPoint(points[n]);
 			}
+			pts.length -= 1; //remove last point since setPoints clone first one
 			return new Polygon(pts);
 		}
 		
